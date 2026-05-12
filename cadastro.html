@@ -22,6 +22,56 @@
         background-color: pink;
       } 
       </style>
+        <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCMXH1_3080pOo2qxokT4WEdbw72SHfs_E",
+  		authDomain: "joao-barbosa.firebaseapp.com",
+  		projectId: "joao-barbosa",
+  		storageBucket: "joao-barbosa.firebasestorage.app",
+  		messagingSenderId: "1084184181601",
+  		appId: "1:1084184181601:web:e5d095a5c2f8bb70e26320"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("formUsuario");
+    const mensagem = document.getElementById("mensagem");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const cpf = document.getElementById("cpf").value;
+      const nome = document.getElementById("nome").value;
+      const email = document.getElementById("email").value;
+      const telefone = document.getElementById("telefone").value;
+      const senha = document.getElementById("senha").value;
+
+      try {
+        await addDoc(collection(db, "usuarios"), {
+          cpf,
+          nome,
+          email,
+          telefone,
+          senha
+        });
+
+        mensagem.textContent = "Usuário salvo com sucesso.";
+        mensagem.style.color = "green";
+        form.reset();
+      } catch (error) {
+        mensagem.textContent = "Erro ao salvar: " + error.message;
+        mensagem.style.color = "red";
+      }
+    });
+  </script>
       </head>
       <body>
         <form method="POST" action="">
